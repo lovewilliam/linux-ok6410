@@ -1,5 +1,8 @@
-/* linux/arch/arm/mach-s3c64xx/mach-smdk6410.c
+/* linux/arch/arm/mach-s3c64xx/mach-ok6410.c
  *
+ * Copyright 2012 Du, Changbin <changbin.du@gmail.com>.
+ *
+ * based on: mach-smdk6410.c
  * Copyright 2008 Openmoko, Inc.
  * Copyright 2008 Simtec Electronics
  *	Ben Dooks <ben@simtec.co.uk>
@@ -554,12 +557,8 @@ static struct samsung_keypad_platdata ok6410_keypad_data __initdata = {
 static struct map_desc ok6410_iodesc[] = {};
 
 static struct platform_device *ok6410_devices[] __initdata = {
-#ifdef CONFIG_SMDK6410_SD_CH0
 	&s3c_device_hsmmc0,
-#endif
-#ifdef CONFIG_SMDK6410_SD_CH1
 	&s3c_device_hsmmc1,
-#endif
 	&s3c_device_i2c0,
 	&s3c_device_i2c1,
 	&s3c_device_fb,
