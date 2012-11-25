@@ -85,7 +85,7 @@
 #include <linux/gpio_keys.h>
 #include <plat/backlight.h>
 #include <plat/usb-phy.h>
-
+#include <plat/sdhci.h>
 
 #include <linux/platform_data/mtd-nand-s3c2410.h>
 
@@ -309,6 +309,19 @@ static struct platform_device ok6410_gpio_ir_recv = {
 	.name			= "gpio-rc-recv",
 	.num_resources		= 0,
 	.dev.platform_data	= &ok6410_gpio_ir_recv_data,
+};
+
+/**
+  * mmc/sdhci plat data
+  */
+static struct s3c_sdhci_platdata ok6410_hsmmc0_pdata = {
+	.max_width		= 4,
+	.cd_type		= S3C_SDHCI_CD_INTERNAL,
+};
+	
+static struct s3c_sdhci_platdata ok6410_hsmmc1_pdata = {
+	.max_width		= 4,
+	.cd_type		= S3C_SDHCI_CD_PERMANENT,
 };
 
 /* framebuffer and LCD setup. */
@@ -975,6 +988,9 @@ static void __init ok6410_machine_init(void)
 
 	s3c_nand_set_platdata(&ok6410_nand_info);
 	s3c24xx_ts_set_platdata(NULL);
+
+	s3c_sdhci0_set_platdata(&ok6410_hsmmc0_pdata);
+	s3c_sdhci1_set_platdata(&ok6410_hsmmc1_pdata);
 
 	/* configure nCS1 width to 16 bits */
 
