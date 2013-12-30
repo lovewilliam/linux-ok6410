@@ -34,6 +34,8 @@
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
 
+#include <plat/sdhci.h>
+
 #ifdef CONFIG_DM9000
 #include <linux/dm9000.h>
 #endif
@@ -315,7 +317,7 @@ static struct platform_device ok6410_gpio_ir_recv = {
  * GPN5 = LCD nRESET signal
  * PWM_TOUT1 => backlight brightness
  */
-
+#ifdef CONFIG_FB
 static void ok6410_lcd_power_set(struct plat_lcd_data *pd,
 				   unsigned int power)
 {
@@ -497,6 +499,7 @@ static struct s3c_fb_platdata ok6410_lcd_pdata __initdata = {
 	.vidcon0	= VIDCON0_VIDOUT_RGB | VIDCON0_PNRMODE_RGB,
 	.vidcon1	= VIDCON1_INV_HSYNC | VIDCON1_INV_VSYNC,
 };
+#endif//CONFIG_FB
 
 #ifdef CONFIG_REGULATOR
 static struct regulator_consumer_supply ok6410_b_pwr_5v_consumers[] __initdata = {
@@ -581,8 +584,9 @@ static struct platform_device *ok6410_devices[] __initdata = {
 #ifdef CONFIG_REGULATOR
 	&ok6410_b_pwr_5v,
 #endif
+#ifdef CONFIG_FB
 	&ok6410_lcd_powerdev,
-
+#endif
 	&s3c_device_nand,
 #ifdef CONFIG_DM9000
 	&s3c_device_dm9000,
@@ -975,7 +979,9 @@ static void __init ok6410_machine_init(void)
 
 	s3c_i2c0_set_platdata(NULL);
 	s3c_i2c1_set_platdata(NULL);
+#ifdef CONFIG_FB
 	s3c_fb_set_platdata(&ok6410_lcd_pdata);
+#endif
 	s3c_hsotg_set_platdata(&ok6410_hsotg_pdata);
 
 	samsung_keypad_set_platdata(&ok6410_keypad_data);
